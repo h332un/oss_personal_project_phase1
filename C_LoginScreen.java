@@ -1,19 +1,35 @@
-// C_LoginScreen.java (continued)
-
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 
 public class C_LoginScreen extends JDialog {
 
-    // UI 관련 필드 생략
+    private final JPanel contentPanel = new JPanel();
+    private JTextField textFieldUserName;
+    private JPasswordField textFieldPassword;
+
+    public static void main(String[] args) {
+        try {
+            C_LoginScreen dialog = new C_LoginScreen();
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            dialog.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public C_LoginScreen() {
         setTitle("To-Do-List Login");
@@ -23,7 +39,6 @@ public class C_LoginScreen extends JDialog {
         getContentPane().add(contentPanel, BorderLayout.CENTER);
         contentPanel.setLayout(new GridLayout(2, 1, 0, 0));
         {
-            // User Name 입력 부분
             JPanel panel = new JPanel();
             contentPanel.add(panel);
             {
@@ -37,7 +52,6 @@ public class C_LoginScreen extends JDialog {
             }
         }
         {
-            // Password 입력 부분
             JPanel panel = new JPanel();
             contentPanel.add(panel);
             {
@@ -51,16 +65,45 @@ public class C_LoginScreen extends JDialog {
             }
         }
         {
-            // 버튼 패널
             JPanel buttonPane = new JPanel();
             buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
             getContentPane().add(buttonPane, BorderLayout.SOUTH);
             {
-                // OK 버튼
                 JButton okButton = new JButton("OK");
                 okButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        // OK 버튼 동작 내용은 생략
+                        String userName = "";
+                        String password = "";
+                        try (FileInputStream file = new FileInputStream("SignupInfo.txt");
+                                Scanner buffer = new Scanner(file)) {
+                            while (buffer.hasNext()) {
+                                String line = buffer.nextLine();
+                                String[] tokens = line.split(":");
+                                if (tokens[0].equals("UserName")) {
+                                    userName = tokens[1];
+                                } else if (tokens[0].equals("Password")) {
+                                    password = tokens[1];
+                                }
+                            }
+
+                            String inputUserName = textFieldUserName.getText().trim();
+                            char[] inputPasswordArray = textFieldPassword.getPassword();
+                            String inputPassword = new String(inputPasswordArray).trim();
+
+                            if (inputUserName.equals(userName) && inputPassword.equals(password)) {
+                                E1_TaskOverviewScreen mainApp = new E1_TaskOverviewScreen(userName);
+                                mainApp.setVisible(true);
+                                dispose();
+                            } else {
+                                JOptionPane.showMessageDialog(C_LoginScreen.this, "User name or password is incorrect",
+                                        "Login Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(C_LoginScreen.this,
+                                    "An error occurred while reading the file.",
+                                    "File Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 });
 
@@ -69,7 +112,6 @@ public class C_LoginScreen extends JDialog {
                 getRootPane().setDefaultButton(okButton);
             }
             {
-                // Cancel 버튼
                 JButton cancelButton = new JButton("Cancel");
                 cancelButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
