@@ -1,10 +1,10 @@
-package oss_personal_project_phase1.src;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class E2_TaskDetailScreen extends JDialog {
     private D_Task task;
@@ -84,20 +84,26 @@ public class E2_TaskDetailScreen extends JDialog {
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                task.setTitle(textFieldTitle.getText());
-                task.setDueDate(textFieldDueDate.getText());
-                task.setPinned(checkBoxPinned.isSelected());
-                task.setMonthlyPeriodic(checkBoxMonthly.isSelected());
-                task.setWeeklyPeriodic(checkBoxWeekly.isSelected());
-                task.setDailyPeriodic(checkBoxDaily.isSelected());
-                task.setCompleted(checkBoxCompleted.isSelected());
+                String dueDateText = textFieldDueDate.getText();
+                if (!dueDateText.isEmpty()) {
+                    try {
+                        LocalDate dueDate = LocalDate.parse(dueDateText);
+                        task.setDueDate(dueDate.toString());
+                    } catch (DateTimeParseException ex) {
+                        JOptionPane.showMessageDialog(E2_TaskDetailScreen.this,
+                                "Invalid date format. Please enter a date in YYYY-MM-DD format.");
+                        return;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(E2_TaskDetailScreen.this,
+                            "Due date cannot be empty. Please enter a valid date.");
+                    return;
+                }
 
                 if (!taskOverviewScreen.containsTask(task)) {
                     taskOverviewScreen.addTask(task);
                 }
-
                 taskOverviewScreen.updateTaskLists();
-
                 dispose();
             }
         });

@@ -1,5 +1,3 @@
-package oss_personal_project_phase1.src;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

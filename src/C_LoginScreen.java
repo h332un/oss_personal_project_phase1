@@ -1,5 +1,3 @@
-package oss_personal_project_phase1.src;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;

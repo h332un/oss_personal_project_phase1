@@ -1,5 +1,3 @@
-package oss_personal_project_phase1.src;
-
 import java.io.File;
 import javax.swing.JDialog;
 
