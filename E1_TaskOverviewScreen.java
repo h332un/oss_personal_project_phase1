@@ -143,6 +143,7 @@ public class E1_TaskOverviewScreen extends JFrame {
         remainingTasksModel.clear();
         completedTasksModel.clear();
 
+        // Sort tasks by priority: pinned tasks first, then by due date
         tasks.sort(Comparator.comparing((D_Task task) -> !task.isPinned())
                 .thenComparing(task -> LocalDate.parse(task.getDueDate())));
 
@@ -157,7 +158,7 @@ public class E1_TaskOverviewScreen extends JFrame {
             }
 
             if (task.isCompleted()) {
-                completedTasksModel.addElement(task)
+                completedTasksModel.addElement(task);
             } else {
                 remainingTasksModel.addElement(task);
             }
