@@ -1,3 +1,5 @@
+package oss_personal_project_phase1;
+
 public class D_Task {
     private String title;
     private String dueDate;
