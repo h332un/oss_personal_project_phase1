@@ -1,4 +1,4 @@
-package oss_personal_project_phase1;
+package oss_personal_project_phase1.src;
 
 public class D_Task {
     private String title;

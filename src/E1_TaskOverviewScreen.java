@@ -1,4 +1,4 @@
-package oss_personal_project_phase1;
+package oss_personal_project_phase1.src;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
