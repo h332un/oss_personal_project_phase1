@@ -1,5 +1,3 @@
-// A_MainApplication.java
-
 import java.io.File;
 import javax.swing.JDialog;
 
